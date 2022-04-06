@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UsersResource.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">simple-service</a> &gt; <a href="index.source.html" class="el_package">com.example</a> &gt; <span class="el_source">UsersResource.java</span></div><h1>UsersResource.java</h1><pre class="source lang-java linenums">package com.example;
+
+import java.util.List;
+
+import javax.jdo.JDOHelper;
+import javax.jdo.PersistenceManager;
+import javax.jdo.PersistenceManagerFactory;
+import javax.jdo.Query;
+
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.MediaType;
+
+@Path(&quot;users&quot;)
+<span class="nc" id="L16">public class UsersResource {</span>
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public List&lt;User&gt; getUsers() {
+<span class="nc" id="L21">    	PersistenceManagerFactory pmf = JDOHelper.getPersistenceManagerFactory(&quot;datanucleus.properties&quot;);</span>
+<span class="nc" id="L22">		PersistenceManager pm = pmf.getPersistenceManager();</span>
+		
+<span class="nc" id="L24">		Query&lt;User&gt; q = pm.newQuery(User.class);</span>
+<span class="nc" id="L25">		q.setOrdering(&quot;surname desc&quot;);</span>
+		
+<span class="nc" id="L27">		List&lt;User&gt; users = q.executeList();</span>
+
+<span class="nc" id="L29">		pm.close();</span>
+		
+<span class="nc" id="L31">		return users;</span>
+    }
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

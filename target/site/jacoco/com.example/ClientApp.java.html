@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="es"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ClientApp.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">simple-service</a> &gt; <a href="index.source.html" class="el_package">com.example</a> &gt; <span class="el_source">ClientApp.java</span></div><h1>ClientApp.java</h1><pre class="source lang-java linenums">package com.example;
+
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.List;
+
+import javax.swing.DefaultListModel;
+import javax.swing.JButton;
+import javax.swing.JFrame;
+import javax.swing.JList;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+
+import jakarta.ws.rs.client.Client;
+import jakarta.ws.rs.client.ClientBuilder;
+import jakarta.ws.rs.client.WebTarget;
+import jakarta.ws.rs.core.GenericType;
+import jakarta.ws.rs.core.MediaType;
+
+public class ClientApp extends JFrame {
+
+	/**
+	 *
+	 */
+	private static final long serialVersionUID = 1L;
+
+<span class="nc" id="L30">	Client client = ClientBuilder.newClient();</span>
+
+<span class="nc" id="L32">	final WebTarget appTarget = client.target(&quot;http://localhost:8080/myapp&quot;);</span>
+<span class="nc" id="L33">	final WebTarget usersTarget = appTarget.path(&quot;users&quot;);</span>
+
+<span class="nc" id="L35">	public ClientApp() {</span>
+<span class="nc" id="L36">		setSize(620, 480);</span>
+<span class="nc" id="L37">		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);</span>
+
+<span class="nc" id="L39">		JButton getUsersButton = new JButton(&quot;Get Users&quot;);</span>
+<span class="nc" id="L40">		JPanel buttonsPanel = new JPanel();</span>
+
+<span class="nc" id="L42">		JButton deleteUserButton = new JButton(&quot;Delete User&quot;);</span>
+
+<span class="nc" id="L44">		buttonsPanel.add(getUsersButton);</span>
+<span class="nc" id="L45">		buttonsPanel.add(deleteUserButton);</span>
+<span class="nc" id="L46">		add(buttonsPanel, BorderLayout.SOUTH);</span>
+
+<span class="nc" id="L48">		final DefaultListModel&lt;User&gt; userListModel = new DefaultListModel&lt;&gt;();</span>
+<span class="nc" id="L49">		JList&lt;User&gt; userList = new JList&lt;&gt;(userListModel);</span>
+
+<span class="nc" id="L51">		JScrollPane listScrollPane = new JScrollPane(userList);</span>
+<span class="nc" id="L52">		add(listScrollPane, BorderLayout.WEST);</span>
+
+<span class="nc" id="L54">		getUsersButton.addActionListener(new ActionListener() {</span>
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+<span class="nc" id="L58">				GenericType&lt;List&lt;User&gt;&gt; genericType = new GenericType&lt;List&lt;User&gt;&gt;() {};</span>
+<span class="nc" id="L59">				List&lt;User&gt; users = usersTarget.request(MediaType.APPLICATION_JSON).get(genericType);</span>
+
+<span class="nc" id="L61">				userListModel.clear();</span>
+<span class="nc bnc" id="L62" title="All 2 branches missed.">				for (User user : users) {</span>
+<span class="nc" id="L63">					userListModel.addElement(user);</span>
+				}
+
+<span class="nc" id="L66">			}</span>
+
+		});
+
+<span class="nc" id="L70">		JPanel rightPanel = new JPanel();</span>
+<span class="nc" id="L71">		add(rightPanel, BorderLayout.EAST);</span>
+
+<span class="nc" id="L73">		JButton addUserButton = new JButton(&quot;Add user&quot;);</span>
+<span class="nc" id="L74">		rightPanel.add(addUserButton);</span>
+
+<span class="nc" id="L76">		final JTextField codeTextField = new JTextField(&quot;&quot;, 2);</span>
+<span class="nc" id="L77">		final JTextField nameTextField = new JTextField(&quot;&quot;, 10);</span>
+<span class="nc" id="L78">		final JTextField surnameTextField = new JTextField(&quot;&quot;, 10);</span>
+
+<span class="nc" id="L80">		rightPanel.add(codeTextField);</span>
+<span class="nc" id="L81">		rightPanel.add(nameTextField);</span>
+<span class="nc" id="L82">		rightPanel.add(surnameTextField);</span>
+
+<span class="nc" id="L84">		addUserButton.addActionListener(new ActionListener() {</span>
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+<span class="nc" id="L89">			}</span>
+		});
+
+<span class="nc" id="L92">		deleteUserButton.addActionListener(new ActionListener() {</span>
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+<span class="nc" id="L97">			}</span>
+
+		});
+
+<span class="nc" id="L101">		setVisible(true);</span>
+<span class="nc" id="L102">	}</span>
+
+	public static void main(String[] args) {
+<span class="nc" id="L105">		SwingUtilities.invokeLater(new Runnable() {</span>
+
+			@Override
+			public void run() {
+<span class="nc" id="L109">				new ClientApp();</span>
+<span class="nc" id="L110">			}</span>
+		});
+<span class="nc" id="L112">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
